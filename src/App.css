@@ -1,0 +1,36 @@
+body {
+    background: url(./images/bg.png) no-repeat 0 0;
+    padding: 4rem;
+}
+
+.container {
+    display: flex;
+}
+
+.card {
+    background: #fff;
+    border-radius: 1rem;
+    padding: 4rem; 
+    text-align: center;
+}
+
+.card--player {
+    width: 40%;
+}
+
+.outcome {
+    width: 20%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.hidden {
+    display: none;
+}
+
+.tally {
+    list-style: none;
+    display: flex;
+    justify-content: center;
+}

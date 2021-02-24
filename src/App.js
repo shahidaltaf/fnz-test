@@ -23,11 +23,9 @@ const App = () => {
   const LOST = 'LOST';
   const DRAW = 'DRAW';
 
-  const ROCK = 'rock';
-  const PAPER = 'paper';
-  const SCISSORS = 'scissors';
-
-  const items = [ROCK, PAPER, SCISSORS];
+  const ROCK = 'ROCK';
+  const PAPER = 'PAPER';
+  const SCISSORS = 'SCISSORS';
 
   const gameLogic = () => {
     if (player === cpu) {
@@ -68,6 +66,7 @@ const App = () => {
   }
 
   const cpuChoice = () => {
+    const items = [ROCK, PAPER, SCISSORS];
     const random = Math.floor(Math.random() * 3);
     setCpu(items[random]);
   }
@@ -75,7 +74,6 @@ const App = () => {
   const playerChoice = (choice) => {
     setPlayer(choice);
     setOutcome(null);
-
     setLoading(true);
     setCounter(3);
 
@@ -101,9 +99,9 @@ const App = () => {
 
   const PlayButtons = ({ variant }) => {
     return <div className={`buttons ${variant === 'small' ? 'buttons--small' : ''}`}>
-      <img src={rockButtonImage} alt="Choose Rock" onClick={() => { playerChoice(items[0]) }} />
-      <img src={paperButtonImage} alt="Choose Paper" onClick={() => { playerChoice(items[1]) }} />
-      <img src={scissorsButtonImage} alt="Choose Scissors" onClick={() => { playerChoice(items[2]) }} />
+      <img src={rockButtonImage} alt="Choose Rock" onClick={() => { playerChoice(ROCK) }} />
+      <img src={paperButtonImage} alt="Choose Paper" onClick={() => { playerChoice(PAPER) }} />
+      <img src={scissorsButtonImage} alt="Choose Scissors" onClick={() => { playerChoice(SCISSORS) }} />
     </div>;
   }
 
@@ -169,7 +167,6 @@ const App = () => {
             <div className="card-container">
               <h2>AI</h2>
               <div className="card">
-
                 {
                   loading ? <h3 className="counter">{counter}</h3> : <GuestureImage guesture={cpu} status={outcome === WIN ? LOST : (outcome === LOST ? WIN : outcome)} />
                 }

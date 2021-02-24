@@ -1,21 +1,111 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
 body {
-    background: url(./images/bg.png) no-repeat 0 0;
+    background: url(./assets/images/bg.png) no-repeat 0 0;
     padding: 4rem;
+    text-align: center;
+    color: #666;
+}
+
+.intro {
+    font-weight: 300;
+    font-size: 3rem;
+    margin-bottom: 2rem;
+}
+
+.buttons {
+    display: flex;
+    justify-content: center;
+}
+
+.buttons img {
+    margin-right: 2rem;
+}
+
+.buttons img:hover {
+    cursor: pointer;
+}
+
+.buttons--small img {
+    width: 60px;
+    margin-right: 1.5rem;
+}
+
+.buttons img:last-child {
+    margin-right: 0;
 }
 
 .container {
     display: flex;
+    align-items: stretch;
+}
+
+.card-container {
+    width: 40%;
+}
+
+.card-container h2 {
+    font-size: 2.25rem;
+    color: #333;
+    margin-bottom: 1rem;
 }
 
 .card {
+    min-height: 500px;
+    max-width: 750px;
+    margin: 0 auto;
     background: #fff;
     border-radius: 1rem;
-    padding: 4rem; 
-    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
 }
 
-.card--player {
-    width: 40%;
+.chosen-image {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 280px;
+    height: 280px;
+    border-radius: 140px;
+    background: #4c9bde;
+    margin-bottom: 8rem;
+}
+
+.chosen-image--player {
+    margin-bottom: 0;
+}
+
+.chosen-image--win {
+    background: #65b15f;
+}
+
+.chosen-image--lost {
+    background: #c14d4d;
+}
+
+.chosen-image--draw {
+    background: #5e6972;
+}
+
+.chosen-image img {
+    width: 140px;
+}
+
+.play-again {
+    padding-top: 1rem;
+    height: 8rem;
+}
+
+.play-again p {
+    font-size: 1.625rem;
+    font-weight: 300;
+    margin-bottom: 1rem;
 }
 
 .outcome {
@@ -23,6 +113,15 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
+    font-size: 3.75rem;
+    color: #5e6972;
+    font-weight: 500;
+}
+
+.counter {
+    font-size: 12.5rem;
+    color: #4c9bde;
+    font-weight: 700;
 }
 
 .hidden {
@@ -30,7 +129,16 @@ body {
 }
 
 .tally {
+    margin-top: 2rem;
     list-style: none;
     display: flex;
     justify-content: center;
+    padding: 0;
+}
+
+.tally li {
+    margin-right: 2rem;
+    font-size: 2.25rem;
+    color: #333;
+    font-weight: 500;
 }

@@ -2,6 +2,14 @@ import React, { useState, useEffect } from 'react';
 
 import './App.css';
 
+import rockButtonImage from './assets/svg/button-rock.svg';
+import paperButtonImage from './assets/svg/button-paper.svg';
+import scissorsButtonImage from './assets/svg/button-scissors.svg';
+
+import rockImage from './assets/svg/rock.svg';
+import paperImage from './assets/svg/paper.svg';
+import scissorsImage from './assets/svg/scissors.svg';
+
 const App = () => {
 
   const [wins, setWins] = useState(0);
@@ -26,7 +34,7 @@ const App = () => {
         setOutcome('WIN');
         setWins(wins + 1);
       } else {
-        setOutcome('LOSE');
+        setOutcome('LOST');
         setLoses(loses + 1);
       }
     }
@@ -36,7 +44,7 @@ const App = () => {
         setOutcome('WIN');
         setWins(wins + 1);
       } else {
-        setOutcome('LOSE');
+        setOutcome('LOST');
         setLoses(loses + 1);
       }
     }
@@ -46,19 +54,21 @@ const App = () => {
         setOutcome('WIN');
         setWins(wins + 1);
       } else {
-        setOutcome('LOSE');
+        setOutcome('LOST');
         setLoses(loses + 1);
       }
     }
   }
 
   const cpuChoice = () => {
-    const random = Math.floor(Math.random() * Math.floor(3));
+    const random = Math.floor(Math.random() * 3);
     setCpu(items[random]);
   }
 
   const playerChoice = (choice) => {
     setPlayer(choice);
+    setOutcome(null);
+
     setLoading(true);
     setCounter(3);
 
@@ -72,7 +82,7 @@ const App = () => {
     if (!loading && cpu !== null) {
       gameLogic();
     }
-  }, [loading]);
+  }, [loading, cpu]);
 
   useEffect(() => {
     if (counter > 0) {
@@ -82,47 +92,91 @@ const App = () => {
     }
   }, [counter]);
 
+  const PlayButtons = ({variant}) => {
+    return <div className={`buttons ${variant === 'small' ? 'buttons--small' : ''}`}>
+      <img src={rockButtonImage} alt="Choose Rock" onClick={() => { playerChoice(items[0])}} />
+      <img src={paperButtonImage} alt="Choose Paper" onClick={() => { playerChoice(items[1])}} />
+      <img src={scissorsButtonImage} alt="Choose Scissors" onClick={() => { playerChoice(items[2])}} />
+    </div>;
+  }
+
+  const GuestureImage = ({guesture, status, player}) => {
+    let imageName;
+    let statusClass;
+
+    if (guesture === 'rock') {
+      imageName = rockImage;
+    } else if (guesture === 'paper') {
+      imageName = paperImage;
+    } else {
+      imageName = scissorsImage;
+    }
+
+    switch (status) {
+      case 'WIN':
+        statusClass = 'chosen-image--win';
+        break;
+      
+      case 'LOST':
+        statusClass = 'chosen-image--lost';
+        break;
+
+      case 'DRAW':
+        statusClass = 'chosen-image--draw';
+        break;
+    
+      default:
+        statusClass = '';
+        break;
+    }
+
+    return <div className={`chosen-image ${player ? 'chosen-image--player' : ''} ${statusClass}`}><img src={imageName} alt="Chosen guesture" /></div>
+  }
+
   return <div>
     <h1 className="hidden">Rock, Paper, Scissors</h1>
 
     {
       !player ? <div className="card">
-        <p>Choose:</p>
-        <button onClick={() => { playerChoice(items[0]) }}>Rock</button>
-        <button onClick={() => { playerChoice(items[1]) }}>Paper</button>
-        <button onClick={() => { playerChoice(items[2]) }}>Scissors</button>
+        <p className="intro">Choose:</p>
+        <PlayButtons />
       </div> : <>
         <div className="container">
-          <div className="card card--player">
-            <h2>You</h2>
-            <p>{player ? player : ''}</p>
 
+        <div className="card-container">
+          <h2>You</h2>
+          <div className="card">
+            
+            <GuestureImage guesture={player} status={outcome} player/>
             {
-              !loading && <div>
+              !loading && <div className="play-again">
                 <p>Play Again:</p>
-                <button onClick={() => { playerChoice(items[0]) }}>Rock</button>
-                <button onClick={() => { playerChoice(items[1]) }}>Paper</button>
-                <button onClick={() => { playerChoice(items[2]) }}>Scissors</button>
+                <PlayButtons variant="small" />
               </div>
             }
+          </div>
           </div>
 
           <div className="outcome">
             {
-              !loading && <h3 outcome>{outcome ? outcome : ''}</h3>
+              !loading && <h3 className="outcome">{outcome && outcome}</h3>
             }
           </div>
 
-          <div className="card card--player">
-            <h2>AI</h2>
+          <div className="card-container">
+          <h2>AI</h2>
+          <div className="card">
+            
             {
-              loading ? <h3>{counter}</h3> : <p>{cpu ? cpu : ''}</p>
+              loading ? <h3 className="counter">{counter}</h3> : <GuestureImage guesture={cpu} status={outcome === 'WIN' ? 'LOST' : (outcome === 'LOST' ? 'WIN' : outcome)} />
             }
           </div>
+          </div>
+
         </div>
         <ul className="tally">
           <li>Win: {wins}</li>
-          <li>Lose: {loses}</li>
+          <li>Lost: {loses}</li>
           <li>Draw: {draws}</li>
         </ul>
       </>

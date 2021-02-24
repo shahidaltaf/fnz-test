@@ -1,14 +1,12 @@
 import React, { useState, useEffect } from 'react';
 
-import './App.css';
-
 import rockButtonImage from './assets/svg/button-rock.svg';
 import paperButtonImage from './assets/svg/button-paper.svg';
 import scissorsButtonImage from './assets/svg/button-scissors.svg';
-
 import rockImage from './assets/svg/rock.svg';
 import paperImage from './assets/svg/paper.svg';
 import scissorsImage from './assets/svg/scissors.svg';
+import './App.css';
 
 const App = () => {
 
@@ -20,41 +18,50 @@ const App = () => {
   const [outcome, setOutcome] = useState(null);
   const [loading, setLoading] = useState(false);
   const [counter, setCounter] = useState(0);
-  const items = ['rock', 'paper', 'scissors'];
+
+  const WIN = 'WIN';
+  const LOST = 'LOST';
+  const DRAW = 'DRAW';
+
+  const ROCK = 'rock';
+  const PAPER = 'paper';
+  const SCISSORS = 'scissors';
+
+  const items = [ROCK, PAPER, SCISSORS];
 
   const gameLogic = () => {
     if (player === cpu) {
-      setOutcome('DRAW');
+      setOutcome(DRAW);
       setDraws(draws + 1);
       return;
     }
 
-    if (player === 'rock') {
-      if (cpu === 'scissors') {
-        setOutcome('WIN');
+    if (player === ROCK) {
+      if (cpu === SCISSORS) {
+        setOutcome(WIN);
         setWins(wins + 1);
       } else {
-        setOutcome('LOST');
+        setOutcome(LOST);
         setLoses(loses + 1);
       }
     }
 
-    if (player === 'paper') {
-      if (cpu === 'rock') {
-        setOutcome('WIN');
+    if (player === PAPER) {
+      if (cpu === ROCK) {
+        setOutcome(WIN);
         setWins(wins + 1);
       } else {
-        setOutcome('LOST');
+        setOutcome(LOST);
         setLoses(loses + 1);
       }
     }
 
-    if (player === 'scissors') {
-      if (cpu === 'paper') {
-        setOutcome('WIN');
+    if (player === SCISSORS) {
+      if (cpu === PAPER) {
+        setOutcome(WIN);
         setWins(wins + 1);
       } else {
-        setOutcome('LOST');
+        setOutcome(LOST);
         setLoses(loses + 1);
       }
     }
@@ -92,39 +99,39 @@ const App = () => {
     }
   }, [counter]);
 
-  const PlayButtons = ({variant}) => {
+  const PlayButtons = ({ variant }) => {
     return <div className={`buttons ${variant === 'small' ? 'buttons--small' : ''}`}>
-      <img src={rockButtonImage} alt="Choose Rock" onClick={() => { playerChoice(items[0])}} />
-      <img src={paperButtonImage} alt="Choose Paper" onClick={() => { playerChoice(items[1])}} />
-      <img src={scissorsButtonImage} alt="Choose Scissors" onClick={() => { playerChoice(items[2])}} />
+      <img src={rockButtonImage} alt="Choose Rock" onClick={() => { playerChoice(items[0]) }} />
+      <img src={paperButtonImage} alt="Choose Paper" onClick={() => { playerChoice(items[1]) }} />
+      <img src={scissorsButtonImage} alt="Choose Scissors" onClick={() => { playerChoice(items[2]) }} />
     </div>;
   }
 
-  const GuestureImage = ({guesture, status, player}) => {
+  const GuestureImage = ({ guesture, status, player }) => {
     let imageName;
     let statusClass;
 
-    if (guesture === 'rock') {
+    if (guesture === ROCK) {
       imageName = rockImage;
-    } else if (guesture === 'paper') {
+    } else if (guesture === PAPER) {
       imageName = paperImage;
     } else {
       imageName = scissorsImage;
     }
 
     switch (status) {
-      case 'WIN':
+      case WIN:
         statusClass = 'chosen-image--win';
         break;
-      
-      case 'LOST':
+
+      case LOST:
         statusClass = 'chosen-image--lost';
         break;
 
-      case 'DRAW':
+      case DRAW:
         statusClass = 'chosen-image--draw';
         break;
-    
+
       default:
         statusClass = '';
         break;
@@ -135,51 +142,46 @@ const App = () => {
 
   return <div>
     <h1 className="hidden">Rock, Paper, Scissors</h1>
-
     {
       !player ? <div className="card">
         <p className="intro">Choose:</p>
         <PlayButtons />
       </div> : <>
-        <div className="container">
+          <div className="container">
+            <div className="card-container">
+              <h2>You</h2>
+              <div className="card">
 
-        <div className="card-container">
-          <h2>You</h2>
-          <div className="card">
-            
-            <GuestureImage guesture={player} status={outcome} player/>
-            {
-              !loading && <div className="play-again">
-                <p>Play Again:</p>
-                <PlayButtons variant="small" />
+                <GuestureImage guesture={player} status={outcome} player />
+                {
+                  !loading && <div className="play-again">
+                    <p>Play Again:</p>
+                    <PlayButtons variant="small" />
+                  </div>
+                }
               </div>
-            }
-          </div>
-          </div>
+            </div>
+            <div className="outcome">
+              {
+                !loading && <h3 className="outcome">{outcome && outcome}</h3>
+              }
+            </div>
+            <div className="card-container">
+              <h2>AI</h2>
+              <div className="card">
 
-          <div className="outcome">
-            {
-              !loading && <h3 className="outcome">{outcome && outcome}</h3>
-            }
+                {
+                  loading ? <h3 className="counter">{counter}</h3> : <GuestureImage guesture={cpu} status={outcome === WIN ? LOST : (outcome === LOST ? WIN : outcome)} />
+                }
+              </div>
+            </div>
           </div>
-
-          <div className="card-container">
-          <h2>AI</h2>
-          <div className="card">
-            
-            {
-              loading ? <h3 className="counter">{counter}</h3> : <GuestureImage guesture={cpu} status={outcome === 'WIN' ? 'LOST' : (outcome === 'LOST' ? 'WIN' : outcome)} />
-            }
-          </div>
-          </div>
-
-        </div>
-        <ul className="tally">
-          <li>Win: {wins}</li>
-          <li>Lost: {loses}</li>
-          <li>Draw: {draws}</li>
-        </ul>
-      </>
+          <ul className="tally">
+            <li>Win: {wins}</li>
+            <li>Lost: {loses}</li>
+            <li>Draw: {draws}</li>
+          </ul>
+        </>
     }
   </div>;
 }
